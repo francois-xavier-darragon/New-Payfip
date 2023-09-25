@@ -48,7 +48,21 @@ class ImportService {
                 if($ligne === "")
                     continue;
 
-                $datas = explode(";", utf8_decode($ligne));
+                // $datas = explode(";", utf8_decode($ligne));
+                
+                if(mb_detect_encoding($ligne,'UTF-8', true) !== 'UTF-8'){
+                    $ligne = mb_convert_encoding($ligne, 'UTF-8');
+                }
+
+                // if ($ligne === 'UTF-8') {
+                //     // La chaîne est encodée en UTF-8
+                //     var_dump("La chaîne est encodée en UTF-8");
+                // } else {
+                //     // La chaîne n'est pas encodée en UTF-8
+                //     var_dump("La chaîne n'est pas encodée en UTF-8");
+                // }
+
+                $datas = explode(";" ,$ligne);   
                 $datas = str_replace("-"," ", $datas);
 
                 if($first) {
