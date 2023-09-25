@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Acceuil {% endblock %}
+
+{% block body %}
+<h1>Accueil</h1>
+    <div class="row">
+        <div class="col-2">
+            {% if creances|length > 0 %}
+            <a class="btn btn-info" href="{{ path('paiement') }}">Tester les paiements </a><br/><br/>
+            {% endif %}
+        </div>
+    </div>
+  <div class="row">
+      <p>Liste des Erreurs</p>
+
+      <table class="table">
+          <thead>
+          <tr>
+              <th>Id de Créance</th>
+              <th>Problème trouvé</th>
+              <td>Référence</td>
+              <th>Email</th>
+              <th>date</th>
+              <th>heure</th>
+          </tr>
+          </thead>
+            <tbody>
+
+            {% for Erreur in listeDesErreurs %}
+            <tr>
+                <td>{{ Erreur.id }}</td>
+                <td>{{ Erreur.logErreur }}</td>
+                <td></td>
+                <td>{{ Erreur.email }}</td>
+                <td>{{ Erreur.dattrans|date('d/m/Y') }}</td>
+                <td>{{ Erreur.heurTrans|date('H:i') }}</td>
+            </tr>
+            {% endfor %}
+                {% for creance in creances %}
+                {% if creance.logErreur is null %}
+                    <tr hidden>
+                        <td>{{ creance.id }}</td>
+                        <td>{{ creance.logErreur }}</td>
+                        <td>{{ creance.reference }}</td>
+                        <td>{{ creance.email }}</td>
+                        <td>{{ creance.dattrans|date('d/m/Y') }}</td >
+                        <td>{{ creance.heurTrans|date('H:i') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ creance.id }}</td>
+                        <td>{{ creance.logErreur }}</td>
+                        <td>{{ creance.reference }}</td>
+                        <td>{{ creance.email }}</td>
+                        <td>{{ creance.dattrans|date('d/m/Y') }}</td>
+                        <td>{{ creance.heurTrans|date('H:i') }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+      </table>
+
+  </div>
+    <div class="row mt-4">
+        <p>Liste des dernier paiements </p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <td>Référence</td>
+                <td>Montant</td>
+                <th>Email</th>
+                <th>date</th>
+                <th>heure</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for creance in creances %}
+                    <tr>
+                        <td>{{ creance.reference }}</td>
+                        <td>{{ creance.printMontant }}</td>
+                        <td>{{ creance.email }}</td>
+                        <td>{{ creance.dattrans|date('j-m-y') }}</td>
+                        <td>{{ creance.heurTrans|date('H:i') }}</td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+{% endblock %}

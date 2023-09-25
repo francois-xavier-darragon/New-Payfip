@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire de paiement{% endblock %}
+
+{% block body %}
+
+    <div class="row mt-4">
+        <div class="col-2">
+            {% for configurationPayfip in PayFipList %}
+                <ul>
+                    <li><a class="btn btn-info" href="{{ path('tentative_search', {'configurationPayfip' : configurationPayfip.id}) }}">{{ configurationPayfip.nom }}</a></li>
+                </ul>
+
+            {%  endfor %}
+        </div>
+    </div>
+
+{% endblock %}

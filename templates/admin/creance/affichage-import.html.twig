@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affichage-import-de-Creance{% endblock %}
+
+{% block body %}
+
+    <h1>Importation dans le module {{ configurationPayfip.nom }}</h1>
+
+    {{ form_start(form) }}
+ <div class="row">
+<div class="col">
+    <span >Veuillez sélectionner les colonnes pour la référence et le montant</span>
+</div>
+
+
+     {{ form_row(form.option_select_ref) }}<br/>
+     {{ form_row(form.option_select_montant) }}<br/>
+     {{ form_end(form) }}
+     <h3>Extration des premières lignes de votre fichier</h3>
+
+     <table class="table">
+         <thead>
+         <tr>
+             {% for index,header in headers %}
+                 <th class="header-{{ index }}">{{ header }}</th>
+             {% endfor %}
+         </tr>
+         </thead>
+         <tbody>
+         {% for info in infos %}
+             <tr>
+                 {% for key,colonne in info %}
+                     <th class="info-{{ key }}">{{ colonne }}</th>
+                 {% endfor %}
+             </tr>
+         {% endfor %}
+         </tbody>
+     </table>
+ </div>
+
+{% endblock %}

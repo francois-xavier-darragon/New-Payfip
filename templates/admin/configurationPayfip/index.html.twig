@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test-type-Payfip{% endblock %}
+
+{% block body %}
+    <h1 class="mt-4">Liste des Modules Payfip</h1>
+
+    <table class="table ">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Créances</th>
+            <th>Import</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% if ConfigurationPayfips|length == 0 %}
+            <tr>
+                <td colspan="4" class="text-center">Aucun module Payfip</td>
+            </tr>
+        {% else %}
+            {% for configurationPayfip in ConfigurationPayfips %}
+                <tr>
+                    <td>{{ configurationPayfip.nom }}</td>
+                    <td><a class="btn btn-primary" href="{{ path('admin_creance_liste', {'configurationPayfip' : configurationPayfip.id}) }}"> <i class="far fa-edit"></i> Créances </a></td>
+                    <td><a class="btn btn-primary" href="{{ path('admin_import_creance', {'configurationPayfip' : configurationPayfip.id}) }}"> <i class="far fa-edit"></i> Import </a></td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('admin_payfip_edit_module', {'configurationPayfip' : configurationPayfip.id}) }}"> <i class="far fa-edit"></i> Modifier </a>
+                        <a class="btn btn-danger" href="{{ path('admin_payfip_delete_module', {'configurationPayfip' : configurationPayfip.id}) }}"> <i class="far fa-trash-alt"></i> Supprimer </a>
+                  </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+    <div class="row mt-4">
+        <div class="col">
+            <a class="btn btn-primary" href="{{ path('admin_payfip_new_module') }}">Ajouter un module PayFip</a>
+        </div>
+    </div>
+
+
+{% endblock %}

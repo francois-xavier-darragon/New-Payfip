@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste-de-import{% endblock %}
+
+{% block body %}
+
+    <h1>Créances : {{ configurationPayfip.nom }}</h1>
+
+    <div class="row mb-3">
+        <div class="col">
+            <a class="btn {% if statut == 5 %}btn-warning{% else %}btn-primary{% endif %}" href="{{ path('admin_creance_liste',{'configurationPayfip': configurationPayfip.id,'statut':5}) }}">Afficher la liste des derniers imports </a>
+            <a class="btn {% if statut == 6 %}btn-warning{% else %}btn-primary{% endif %}" href="{{ path('admin_creance_liste',{'configurationPayfip': configurationPayfip.id,'statut':6}) }}">Afficher la liste des derniers paiements </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <a class="btn {% if statut == 1 %}btn-warning{% else %}btn-primary{% endif %}" href="{{ path('admin_creance_liste',{'configurationPayfip': configurationPayfip.id,'statut':1}) }}">Aficher la liste des payées</a>
+            <a class="btn {% if statut == 0 %}btn-warning{% else %}btn-primary{% endif %}" href="{{ path('admin_creance_liste',{'configurationPayfip': configurationPayfip.id,'statut':0}) }}">Aficher la liste des non-payées</a>
+            <a class="btn {% if statut == 2 %}btn-warning{% else %}btn-primary{% endif %}" href="{{ path('admin_creance_liste',{'configurationPayfip': configurationPayfip.id,'statut':2}) }}">Afficher la liste des refusées </a>
+            <a class="btn {% if statut == 3 %}btn-warning{% else %}btn-primary{% endif %}" href="{{ path('admin_creance_liste',{'configurationPayfip': configurationPayfip.id,'statut':3}) }}">Afficher la liste des abandonnées </a>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-liste">
+                <i class="far fa-trash-alt"></i> supprimer la liste
+            </button>
+        </div>
+    </div>
+
+
+    {% include 'admin/creance/include/liste-creances.html.twig' with {'creances' : creances} %}
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal-liste" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">Suppression d'une liste de créance </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        {%  if statut == 0 %}
+                                Attention êtes-vous sur de voiloir supprimer la liste des créances non payées du module {{ configurationPayfip.nom }}.
+                        {% elseif statut == 1 %}
+                                Attention êtes-vous sur de voiloir supprimer la liste des créances payées du module {{ configurationPayfip.nom }}.
+                        {% elseif  statut == 2 %}
+                                Attention êtes-vous sur de voiloir supprimer la liste des créances refusée du module {{ configurationPayfip.nom }}.
+                        {% elseif  statut == 3 %}
+                                Attention êtes-vous sur de voiloir supprimer la liste des créances abondonné du module {{ configurationPayfip.nom }}.
+                        {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <a href="{{ path('admin_remove_creance_liste',{'configurationPayfip':configurationPayfip.id, 'status':statut }) }}" class="btn btn-danger">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
+{% endblock %}

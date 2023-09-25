@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+
+<div class="row mt-4">
+    <div class="col-4">
+        <h3>PAIEMENT EN LIGNE {{ creance.configurationPayfip.nom }}</h3>
+
+        <table class="table">
+            <tr>
+                <th>Référence de facture</th>
+                <td>{{ creance.reference }}</td>
+            </tr>
+
+            <tr>
+                <th>Montant</th>
+                <td>{{ creance.printMontant }} </td>
+            </tr>
+
+            <tr>
+                <th>Email</th>
+                <td>{{ creance.email }}</td>
+            </tr>
+        </table>
+
+            <a href="javascript:validation_payfip()" class="btn btn-primary" >
+                Payer
+            </a>
+    </div>
+
+    {% block javascripts %}
+        <script type="text/javascript">
+
+        function validation_payfip() {
+                window.open( "{{ (url)|raw }}","_blank","height=700, width=900, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no, directories=no, status=no");
+            }
+
+        </script>
+
+    {% endblock%}
+{% endblock %}

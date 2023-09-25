@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<div class="row mt-4">
+
+    <div class="col-4">
+        {{ form_start(form) }}
+        <div class="form-group">
+            <label for="info-type">Type</label>
+            <input type="text" class="form-control" id="info-type" value="{{ configurationPayfip.type }}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="info-type">Numéro de client</label>
+            <input type="text" class="form-control" id="info-type" value="{{ configurationPayfip.numcli }}" readonly>
+        </div>
+        {{ form_row(form.nom) }}
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col">
+        {{ form_widget(form.submit) }}
+        <a class="btn btn-danger" href="{{ path('admin_payfip_index') }}">Annuler</a>
+        <a class="btn btn-primary" href="{{ path('test', {'configurationPayfip': configurationPayfip.id }) }}" >Tester le formulaire</a>
+        <a class="btn btn-info" href="javascript:activation();">Activation</a><br/><br/>
+    </div>
+</div>
+
+    {{ form_end(form) }}<br/>
+
+
+
+ {% block javascripts %}
+
+    <script>
+
+        function activation(){
+
+            let numcli = "{{ configurationPayfip.numcli }}"
+            let type = "{{ configurationPayfip.type }}"
+            //type titre par défaut
+            let ref_det_test = "999900000000999999";
+            if (type == "role") {
+                ref_det_test = "999999990000000000000";
+            }
+
+            window.open("https://www.payfip.gouv.fr/tpa/paiement.web?numcli="+numcli+"&refdet="+ref_det_test+"&objet=Paiement&montant=9999&mel=support@net15.fr&saisie=T","_blank","height=700, width=900, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no, directories=no, status=no");
+
+        }
+    </script>
+{% endblock %}
+{% endblock %}

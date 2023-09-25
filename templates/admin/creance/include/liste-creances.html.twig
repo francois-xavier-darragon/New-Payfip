@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col">
+
+        <table class="table">
+            <thead>
+            <tr>
+
+                <th>Références</th>
+                <th>Montants</th>
+                <th> Status </th>
+                {% if statut == 1 or statut == 2 or statut == 3 or statut == 6 %}
+                    <th>Date de paiement</th>
+                    <th>Heure de paiement</th>
+                {% elseif statut == 5 %}
+                <th>Date d'import</th>
+                {% else %}
+                {% endif %}
+                <th>Supprimer</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+
+
+            {% if creances|length == 0 %}
+                <tr>
+                    <td colspan="6" class="text-center">Aucune créance</td>
+                </tr>
+            {% else %}
+
+                {% for creance in creances %}
+                    <tr>
+                        <td>{{ creance.reference }}</td>
+                        <td>{{ creance.printMontant }}</td>
+                        <td>{{ creance.printStatut}}</td>
+                        {% if statut == 1 or statut == 2 or statut == 3 or statut == 6 %}
+                            <td>{{ creance.dattrans|date('d/m/Y') }}</td >
+                            <td>{{ creance.heurTrans|date('H:i') }}</td>
+                        {% elseif statut == 5 %}
+                            <td>{{ creance.dateImport|date('d/m/Y',)}}</td>
+                        {% else %}
+                        {% endif%}
+                        <td>
+                            <a  data-bs-toggle="modal" data-bs-target="#deleteModal-{{  creance.id }}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+
+                            <div class="modal fade" id="deleteModal-{{ creance.id}}" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modal-title">Suppression d'une créance </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Attention êtes-vous sur de voiloir supprimer la créance : <br/> {{ creance.reference }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            {# TODO trouver erreur  #}
+                                            {# <a href="{{ path('admin_remove_creance',{'creance': creance.id, 'statut':statut }) }}" class="btn btn-danger">Supprimer</a> #}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+

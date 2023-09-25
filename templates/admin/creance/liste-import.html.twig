@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste-de-import{% endblock %}
+
+{% block body %}
+<div class="row mt-4">
+    <div class="col">
+    <a class="btn btn-primary" href="{{ path('admin_creance_liste', {'configurationPayfip' : configurationPayfip.id, 'statut': 0}) }}"> <i class="far fa-edit"></i> Liste des créances du module</a>
+    <h2 class="mt-4">Liste des créances crées</h2>
+    {% include 'admin/creance/include/liste-creances.html.twig' with {'creances' : references} %}
+
+    <h2>Liste des créances existant déja</h2>
+    {% include 'admin/creance/include/liste-creances.html.twig' with {'creances' : referencesExisteDeja} %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire de paiement{% endblock %}
+
+{% block body %}
+
+        <h3 class="mt-4">PAIEMENT EN LIGNE {{ configurationPayfip.nom }}</h3>
+        <form action="{{ path('tentative_search_validation', {'configurationPayfip' : configurationPayfip.id}) }}" method="post">
+            <p>Attention tous les champs sont obligatoires</p>
+            <table class="table">
+                <tr>
+                    <th>Référence</th>
+                    <td>
+                        {% if configurationPayfip.type == 'role' %}
+                            <input class="role" type="text" name="reference" id="reference" placeholder="9999-99-99-0000000000000" maxlength="21" required>
+                        {% elseif configurationPayfip.type == 'titre' %}
+                            <input class="titre" type="text" name="reference" id="reference" placeholder="9999-00000000-999999" maxlength="21" required>
+                        {% endif %}
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>Montant</th>
+                    <td>
+                        <input class="montantEuros" type="text" name="montantEuros" id="montantEuros" placeholder="00" size="3" maxlength="4"> ,
+                        <input type="text" class="montantCentimes" name="montantCentimes" id="montantCentimes" placeholder="00" size="1" maxlength="2">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>
+                        <input type="email" id="email" name ="email" value="support@15net.fr" required>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>Confirmation Email</th>
+                    <td>
+                        <input type="email" id="emailDeConfirmation" name ="emailDeConfirmation"  value="support@15net.fr" required>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary">Valider</button>
+        </form>
+
+{% endblock %}
+
+
+ {% block javascripts %}
+
+     <script type="text/javascript" src="{{ asset('js/jquery.mask.min.js') }}"></script>
+     <script type="text/javascript" src="{{ asset('js/jquery.mask.js') }}"></script>
+
+
+     <script type="text/javascript" >
+
+         $(document).ready(function() {
+             $('.titre').mask('9999-00000000-999999');
+
+             $('.role').mask("NNNN-AA-NN-BBBBBBBBBBBBB",{
+                 "translation" : {
+                     N : { pattern : /[0-9]/ },
+                     A : { pattern : /[A-Z0-9]/ },
+                     B : { pattern : /[0-9]/ , optional: true }
+                 }
+             });
+
+             $('.montantEuros').mask('NNNN',{"translation": {
+                     N: {pattern : /[0-9]/}
+                 }
+             });
+
+             $('.montantCentimes').mask('NN',{"translation": {
+                     N: {pattern : /[0-9]/}
+                 }
+             });
+
+         });
+
+     </script>
+
+ {% endblock%}
+

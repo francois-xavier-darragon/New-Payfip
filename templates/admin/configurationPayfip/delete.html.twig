@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <p class="mt-4">Attention êtes-vous sur de vouloir supprimer le module {{ configurationPayfip.nom}} ainsi que  ses créances ?</p>
+
+    <div class="row mt-4">
+        <div class="col">
+            <a class="btn btn-primary" href="{{ path('admin_payfip_index') }}">Annuler</a>
+            <a class="btn btn-danger" href="{{ path('admin_payfip_delete_module_confirmation',{"configurationPayfip" :configurationPayfip.id} ) }}">Supprimer</a>
+        </div>
+    </div>
+
+{% endblock %}
