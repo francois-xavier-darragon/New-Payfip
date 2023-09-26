@@ -4,7 +4,21 @@
 
 {% block body %}
 
-    {{ form(form) }}
 
+  <div class="m-xl-5">
+    {{ form_start(form) }}
+    
+    {{ form_row(form.nom, {'label_attr': {'class': 'm-3'}, 'attr': {'class': 'form-control-sm'}}) }}
+    {{ form_row(form.numcli, {'label_attr': {'class': 'm-3'}, 'attr': {'class': 'form-control-sm'}}) }}
+    {{ form_row(form.type, {'label_attr': {'class': 'm-3'}, 'attr': {'class': 'form-control-sm'}}) }}
+  <div class="m-3">
+    <div class="form-group mb-2">
+        <label for="{{ form.file.vars.id }}">Choisir un fichier CSV</label>
+    </div>
+      {{ form_widget(form.file, {'attr': {'class': 'form-control-sm mb-2'}}) }}
+      {{ form_row(form.submit, {'label_attr': {'class': 'm-3'}, 'attr': {'class': 'form-control-sm'}}) }}
+    </div>
+    {{ form_end(form) }}
+</div>
 
 {% endblock %}

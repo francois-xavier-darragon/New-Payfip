@@ -29,7 +29,10 @@ class PayFipCreanceType extends AbstractType
                 ]
             ])
             //TODO en construction
-            // ->add('file', FileType::class, ['label' => 'Choisir un fichier CSV',])        
+            ->add('file', FileType::class, [
+                'label' => 'Choisir un fichier CSV',
+                'mapped' => false,
+                ])        
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
         ;
     }

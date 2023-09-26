@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
    
-    #[Route('/admin/payfip', name: 'admin_payfip_home')]
+    #[Route('/', name: 'admin_payfip_home')]
     public function index(CreanceRepository $creanceRepository, LogErreurRepository $logErreurRepository): Response
     {
 
