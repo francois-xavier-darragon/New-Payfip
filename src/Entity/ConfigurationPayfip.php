@@ -36,9 +36,13 @@ class ConfigurationPayfip
     #[ORM\OneToMany(mappedBy: 'configurationPayFip', targetEntity: Creance::class)]
     private Collection $creances;
 
+    #[ORM\OneToMany(mappedBy: 'configurationPayfip', targetEntity: Import::class)]
+    private Collection $imports;
+
     public function __construct()
     {
         $this->creances = new ArrayCollection();
+        $this->imports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +146,36 @@ class ConfigurationPayfip
             // set the owning side to null (unless already changed)
             if ($creance->getConfigurationPayFip() === $this) {
                 $creance->setConfigurationPayFip(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Import>
+     */
+    public function getImports(): Collection
+    {
+        return $this->imports;
+    }
+
+    public function addImport(Import $import): static
+    {
+        if (!$this->imports->contains($import)) {
+            $this->imports->add($import);
+            $import->setConfigurationPayfip($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImport(Import $import): static
+    {
+        if ($this->imports->removeElement($import)) {
+            // set the owning side to null (unless already changed)
+            if ($import->getConfigurationPayfip() === $this) {
+                $import->setConfigurationPayfip(null);
             }
         }
 

@@ -2,7 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\ConfigurationPayfip;
+// use App\Entity\ConfigurationPayfip;
+use App\Entity\Import;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -34,7 +35,8 @@ class ImportType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ConfigurationPayfip::class,
+            // 'data_class' => ConfigurationPayfip::class,
+            'data_class' => Import::class,
             'headers' => null,
         ]);
     }

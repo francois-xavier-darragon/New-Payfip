@@ -42,15 +42,12 @@ class ConfigurationPayfipController extends AbstractController
             $file = $form->get('file')->getData();
             $nomClient = $form->get('nom')->getData();
             $numcli = $form->get('numcli')->getData();
-            // $importService->upload($file);
             $fileName = $importService->upload($file, $nomClient, $numcli);
             $session->set('fileName', $fileName);
-            // dd($importService->filePath($fileName));
             $configurationPayfipRepository->save($configurationPayfip, true);
             
             return $this->redirectToRoute('admin_import_creance', [
                 'configurationPayfip' => $configurationPayfip->getId(),
-                // 'fileName' => $fileName
         ]);
 
         }

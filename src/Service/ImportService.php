@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\ConfigurationPayfip;
 use App\Entity\Creance;
+use App\Entity\Import;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -116,11 +117,11 @@ class ImportService {
 
     }
 
-    public function extraction(ConfigurationPayfip $configurationPayfip, string $filePath){
+    public function extraction(Import $import, ConfigurationPayfip $configurationPayfip, string $filePath){
 
         //Extraction des données et sauvegarde en bdd.
-        $optionReference = $configurationPayfip->getOptionSelectRef();
-        $optionMontant = $configurationPayfip->getOptionSelectMontant();
+        $optionReference = $import->getOptionSelectRef();
+        $optionMontant = $import->getOptionSelectMontant();
 
         $references = [];
         $entete = true;
@@ -140,7 +141,6 @@ class ImportService {
         {
             if($entete && $index == 0)
                 continue;
-
 
             $creance = $this->creancesManager->create($configurationPayfip);
             $creance->setDateImport($dateImport);
