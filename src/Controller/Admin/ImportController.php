@@ -38,7 +38,6 @@ class ImportController extends AbstractController
             $dateImport = New \DateTime();
             $import->setDateImport($dateImport);
             $import->SetNom($fileName);
-            $import->setConfigurationPayfip($configurationPayfip);
             if($import->getOptionSelectRef() !== $import->getOptionSelectMontant()){
 
                 $importRepository->save($import, true);

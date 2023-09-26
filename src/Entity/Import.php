@@ -29,6 +29,10 @@ class Import
     #[ORM\ManyToOne(targetEntity: ConfigurationPayfip::class, inversedBy: 'imports')]
     private ?ConfigurationPayfip $configurationPayfip = null;
 
+    public function __construct(ConfigurationPayfip $configurationPayfip){
+        $this->configurationPayfip = $configurationPayfip;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
