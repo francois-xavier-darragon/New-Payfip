@@ -81,7 +81,7 @@ class ImportService {
 
                 // $datas = explode(";", utf8_decode($ligne));
                 
-                if(mb_detect_encoding($ligne,'UTF-8', true) !== 'UTF-8'){
+                if(mb_detect_encoding($ligne,'UTF-8', true) !== false ){
                     $ligne = mb_convert_encoding($ligne, 'UTF-8');
                 }
 

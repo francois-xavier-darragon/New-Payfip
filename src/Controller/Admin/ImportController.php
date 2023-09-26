@@ -65,6 +65,7 @@ class ImportController extends AbstractController
         $fileName = $session->get('fileName');
         $filePath = $importService->filePath($fileName);
         $retour = $importService->extraction($import, $import->getConfigurationPayfip(), $filePath);
+        //TODO supprimer le ficher après l'import des données en bdd
 
         return  $this->render('admin/creance/liste-import.html.twig',[
             'references' => $retour['references'],
