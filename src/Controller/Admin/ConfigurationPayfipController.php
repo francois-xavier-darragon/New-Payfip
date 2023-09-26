@@ -6,8 +6,10 @@ use App\Entity\ConfigurationPayfip;
 use App\Form\PayFipCreanceType;
 use App\Form\PayFipGestionType;
 use App\Repository\ConfigurationPayfipRepository;
+use App\Service\ImportService;
 // use App\Repository\LogErreurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +26,7 @@ class ConfigurationPayfipController extends AbstractController
     }
 
     #[Route('/admin/payfip/nouveau-formulaire', name: 'admin_payfip_new_module')]
-    public function admin_payfip_new_module(ConfigurationPayfipRepository $configurationPayfipRepository, Request $request): Response
+    public function admin_payfip_new_module(ConfigurationPayfipRepository $configurationPayfipRepository, ImportService $importService, SessionInterface $session, Request $request): Response
     {
         //Ajout d'un nouveau module Payfip
         $configurationPayfip = new ConfigurationPayfip();
@@ -34,14 +36,19 @@ class ConfigurationPayfipController extends AbstractController
         $form = $this->createForm(PayFipCreanceType::class, $configurationPayfip);
 
         $form->handleRequest($request);
-        // $file = null;
+        
         if($form->isSubmitted() && $form->isValid()  )
         {
+            $file = $form->get('file')->getData();
+            // $importService->upload($file);
+            $fileName = $importService->upload($file);
+            $session->set('fileName', $fileName);
+            // dd($importService->filePath($fileName));
             $configurationPayfipRepository->save($configurationPayfip, true);
-            // $file = $form->get('file')->getData();
             
             return $this->redirectToRoute('admin_import_creance', [
-                'configurationPayfip' => $configurationPayfip->getId()
+                'configurationPayfip' => $configurationPayfip->getId(),
+                // 'fileName' => $fileName
         ]);
 
         }

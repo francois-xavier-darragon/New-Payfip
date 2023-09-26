@@ -4,26 +4,56 @@ namespace App\Service;
 
 use App\Entity\ConfigurationPayfip;
 use App\Entity\Creance;
-use App\Repository\ConfigurationPayfipRepository;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Repository\CreanceRepository;
 
 class ImportService {
 
 
-    /**
-     * @var CreanceRepository
-     */
     private $creanceRepository;
-    /**
-     * @var CreancesManager
-     */
     private $creancesManager;
+    private $targetDirectory;
+    private $kernel;
 
-    public function __construct(CreanceRepository $creanceRepository, CreancesManager $creancesManager)
+    public function __construct(CreanceRepository $creanceRepository, CreancesManager $creancesManager, KernelInterface $kernel, $targetDirectory)
     {
         $this->creanceRepository = $creanceRepository;
         $this->creancesManager = $creancesManager;
+        $this->targetDirectory = $targetDirectory;
+        $this->kernel = $kernel;
 
+    }
+
+
+    public function upload(UploadedFile $file){
+     
+        $originalFileName = $file->getClientOriginalName();
+        $extension = pathinfo($originalFileName, PATHINFO_EXTENSION);
+        $format = ['csv'];
+    
+        if(in_array($extension, $format)) {
+            $fileName = '-' .uniqid(). '-'.time().'.'.$extension;
+            try {
+                $file->move($this->getTargetDirectory(), $fileName);
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+            
+            return $fileName;
+        }
+    }
+
+    public function getTargetDirectory(){
+        return $this->targetDirectory;
+    }
+
+    public function filePath(string $fileName){
+        $kernelProjectDir = $this->kernel->getProjectDir();
+        $filePath = $kernelProjectDir . '/public/uploads/doc/' . $fileName;
+       
+        return $filePath;
     }
 
     public function parseInformation(string $filePath, int $nbLigne = 10){
@@ -158,7 +188,7 @@ class ImportService {
             }
         }
 
-        return array('references'=>$references,'referencesExisteDeja'=> $creancesExisteDeja, 'statut'=> $statut);
+        return array('references'=> $references,'referencesExisteDeja'=> $creancesExisteDeja, 'statut'=> $statut);
 
     }
 

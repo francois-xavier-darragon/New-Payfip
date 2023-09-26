@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ImportController extends AbstractController
@@ -17,12 +18,14 @@ class ImportController extends AbstractController
     
     #[Route('/admin/payfip/{configurationPayfip}/import', name: 'admin_import_creance')]
     public function admin_import_creance(ConfigurationPayfip $configurationPayfip,
-                              ConfigurationPayfipRepository $configurationPayfipRepository,
+                              ConfigurationPayfipRepository $configurationPayfipRepository, SessionInterface $session,
                               ImportService $importService,
                               Request $request): Response
     {
-        //TODO modifier cette ligne de code pour pour selection le choix du ficher 
-        $datas = $importService->parseInformation('../public/doc/REFERENCE TIPI.csv');
+
+        $fileName = $session->get('fileName');
+        $filePath = $importService->filePath($fileName);
+        $datas = $importService->parseInformation($filePath);
 
         $form = $this->createForm(ImportType::class, $configurationPayfip, [
             'headers' => array_flip($datas['headers']),
@@ -53,10 +56,12 @@ class ImportController extends AbstractController
     }
 
     #[Route('/admin/payfip/{configurationPayfip}/import/extration', name: 'admin_extraction_import')]
-    public function admin_extraction_import(ConfigurationPayfip $configurationPayfip, ImportService $importService)
+    public function admin_extraction_import(ConfigurationPayfip $configurationPayfip, ImportService $importService, SessionInterface $session)
     {
-        $filename= '../public/doc/REFERENCE TIPI.csv';
-        $retour = $importService->extraction($configurationPayfip, $filename);
+        // $filename= '../public/doc/REFERENCE TIPI.csv';
+        $fileName = $session->get('fileName');
+        $filePath = $importService->filePath($fileName);
+        $retour = $importService->extraction($configurationPayfip, $filePath);
 
         return  $this->render('admin/creance/liste-import.html.twig',[
             'references' => $retour['references'],
