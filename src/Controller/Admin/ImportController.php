@@ -5,10 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\ConfigurationPayfip;
 use App\Entity\Import;
 use App\Form\ImportType;
-// use App\Repository\ConfigurationPayfipRepository;
 use App\Repository\ImportRepository;
 use App\Service\ImportService;
-use PhpParser\Node\Expr\New_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,12 +38,11 @@ class ImportController extends AbstractController
             $dateImport = New \DateTime();
             $import->setDateImport($dateImport);
             $import->SetNom($fileName);
-
+            $import->setConfigurationPayfip($configurationPayfip);
             if($import->getOptionSelectRef() !== $import->getOptionSelectMontant()){
 
                 $importRepository->save($import, true);
                 return  $this->redirectToRoute('admin_extraction_import', [
-                    // 'configurationPayfip' => $configurationPayfip->getId(),
                     'import' => $import->getId()
                 ] );
             } else {
@@ -65,7 +62,7 @@ class ImportController extends AbstractController
     #[Route('/admin/payfip/import/{import}/extration', name: 'admin_extraction_import')]
     public function admin_extraction_import(Import $import, ImportService $importService, SessionInterface $session)
     {
-        // $filename= '../public/doc/REFERENCE TIPI.csv';
+        
         $fileName = $session->get('fileName');
         $filePath = $importService->filePath($fileName);
         $retour = $importService->extraction($import, $import->getConfigurationPayfip(), $filePath);
