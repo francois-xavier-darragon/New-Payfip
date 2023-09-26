@@ -27,14 +27,14 @@ class ImportService {
     }
 
 
-    public function upload(UploadedFile $file){
+    public function upload(UploadedFile $file, $nomClient, $numcli){
      
         $originalFileName = $file->getClientOriginalName();
         $extension = pathinfo($originalFileName, PATHINFO_EXTENSION);
         $format = ['csv'];
     
         if(in_array($extension, $format)) {
-            $fileName = '-' .uniqid(). '-'.time().'.'.$extension;
+            $fileName = $nomClient. '-' .$numcli. '-' .uniqid(). '-'.time().'.'.$extension;
             try {
                 $file->move($this->getTargetDirectory(), $fileName);
             } catch (FileException $e) {

@@ -40,8 +40,10 @@ class ConfigurationPayfipController extends AbstractController
         if($form->isSubmitted() && $form->isValid()  )
         {
             $file = $form->get('file')->getData();
+            $nomClient = $form->get('nom')->getData();
+            $numcli = $form->get('numcli')->getData();
             // $importService->upload($file);
-            $fileName = $importService->upload($file);
+            $fileName = $importService->upload($file, $nomClient, $numcli);
             $session->set('fileName', $fileName);
             // dd($importService->filePath($fileName));
             $configurationPayfipRepository->save($configurationPayfip, true);
