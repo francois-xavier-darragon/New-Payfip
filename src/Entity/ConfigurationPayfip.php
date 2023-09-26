@@ -24,11 +24,6 @@ class ConfigurationPayfip
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $type = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $option_select_ref = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $option_select_montant = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $statut = null;
@@ -82,30 +77,6 @@ class ConfigurationPayfip
     public function setType(?string $type): static
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getOptionSelectRef(): ?int
-    {
-        return $this->option_select_ref;
-    }
-
-    public function setOptionSelectRef(?int $option_select_ref): static
-    {
-        $this->option_select_ref = $option_select_ref;
-
-        return $this;
-    }
-
-    public function getOptionSelectMontant(): ?int
-    {
-        return $this->option_select_montant;
-    }
-
-    public function setOptionSelectMontant(?int $option_select_montant): static
-    {
-        $this->option_select_montant = $option_select_montant;
 
         return $this;
     }
